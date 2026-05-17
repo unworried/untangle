@@ -16,8 +16,8 @@ struct word {
 struct text {
     const char  *buf;
     size_t      len;
-    struct word words[MAX_WORDS];
-    size_t      nwords;
+    struct word ws[MAX_WORDS];
+    size_t      nws;
 };
 
 void text_init(struct text *t, const char *buf)
@@ -26,7 +26,7 @@ void text_init(struct text *t, const char *buf)
 
     t->buf = buf;
     t->len = strlen(buf);
-    t->nwords = 0;
+    t->nws = 0;
 
     i = 0;
     while (i < t->len) {
@@ -41,19 +41,19 @@ void text_init(struct text *t, const char *buf)
         while (i < t->len && !isspace(t->buf[i]))
             i++;
 
-        if (t->nwords == MAX_WORDS)
+        if (t->nws == MAX_WORDS)
             break;
 
-        t->words[t->nwords].off = start;
-        t->words[t->nwords].len = i - start;
-        t->nwords++;
+        t->ws[t->nws].off = start;
+        t->ws[t->nws].len = i - start;
+        t->nws++;
     }
 
 #ifdef DBG_TEXT_INIT
     printf("dbg: text_init() <= buf[ %s ]\n", buf);
-    for (size_t j = 0; j < t->nwords; j++)
+    for (size_t j = 0; j < t->nws; j++)
         printf("dbg: text_init() => off[ %zu ] : len[ %zu ]\n",
-                t->words[j].off, t->words[j].len);
+                t->ws[j].off, t->ws[j].len);
 #endif /* DBG_TEXT_INIT */
 }
 
@@ -61,8 +61,8 @@ static int word_eq(const struct text *a, size_t ai, const struct text *b, size_t
 {
     const struct word *aw, *bw;
 
-    aw = &a->words[ai];
-    bw = &b->words[bi];
+    aw = &a->ws[ai];
+    bw = &b->ws[bi];
 
 #ifdef DBG_WORD_EQ
     printf("dbg: word_eq() => a[ ");
@@ -98,10 +98,10 @@ int main(void)
 
     correct = 0;
     incorrect = 0;
-    total = target.nwords;
+    total = target.nws;
 
-    for (i = 0; i < target.nwords; i++) {
-        if (i >= input.nwords) {
+    for (i = 0; i < target.nws; i++) {
+        if (i >= input.nws) {
             incorrect++;
             continue;
         }
