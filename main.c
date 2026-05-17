@@ -17,8 +17,8 @@
 #define CLEAR_LINE	"\r\033[2K"
 
 /* DEBUG CTL */
-#define DBG_TEXT_INIT
-#define DBG_WORD_EQ
+//#define DBG_TEXT_INIT
+//#define DBG_WORD_EQ
 
 struct word {
 	size_t	 off;
